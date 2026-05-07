@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">
+        <i class="fas fa-tachometer-alt"></i> Patient Dashboard
+    </h2>
+    <p class="lead">Welcome, {{ user.get_full_name }}!</p>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="stat-card primary">
+                <div class="stat-number">{{ total_appointments }}</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card warning">
+                <div class="stat-number">{{ pending_appointments }}</div>
+                <div class="stat-label">Pending Appointments</div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stat-card success">
+                <div class="stat-number">{{ approved_appointments }}</div>
+                <div class="stat-label">Approved Appointments</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+                <div class="mt-3">
+                    <a href="{% url 'appointments:book_appointment' %}" class="btn btn-primary me-2 mb-2">
+                        <i class="fas fa-calendar-plus"></i> Book New Appointment
+                    </a>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary me-2 mb-2">
+                        <i class="fas fa-user-edit"></i> Update Profile
+                    </a>
+                    <a href="{% url 'accounts:notifications' %}" class="btn btn-outline-primary mb-2">
+                        <i class="fas fa-bell"></i> View All Notifications
+                        {% if unread_count > 0 %}
+                            <span class="badge bg-danger">{{ unread_count }}</span>
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Recent Appointments -->
+        <div class="col-md-7 mb-4">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-calendar-check"></i> Recent Appointments</h4>
+                {% if appointments %}
+                    <div class="table-responsive mt-3">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointments %}
+                                <tr>
+                                    <td>Dr. {{ appointment.doctor.user.get_full_name }}</td>
+                                    <td>{{ appointment.appointment_date }}</td>
+                                    <td>{{ appointment.appointment_time }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ appointment.status|lower }}">
+                                            {{ appointment.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'appointments:appointment_detail' appointment.id %}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">No appointments yet. Book your first appointment!</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Notifications -->
+        <div class="col-md-5 mb-4">
+            <div class="dashboard-card">
+                <h4>
+                    <i class="fas fa-bell"></i> Recent Notifications
+                    {% if unread_count > 0 %}
+                        <span class="badge bg-danger">{{ unread_count }}</span>
+                    {% endif %}
+                </h4>
+                {% if notifications %}
+                    <div class="mt-3">
+                        {% for notification in notifications %}
+                        <div class="card mb-2 {% if not notification.is_read %}border-primary{% endif %}">
+                            <div class="card-body p-3">
+                                <h6 class="mb-1">
+                                    {% if not notification.is_read %}
+                                        <span class="badge bg-primary">New</span>
+                                    {% endif %}
+                                    {{ notification.title }}
+                                </h6>
+                                <p class="mb-1 small">{{ notification.message|truncatewords:15 }}</p>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> {{ notification.created_at|timesince }} ago
+                                </small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'accounts:notifications' %}" class="btn btn-sm btn-outline-primary mt-2">
+                        View All Notifications
+                    </a>
+                {% else %}
+                    <p class="text-muted mt-3">No notifications yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Hero Section -->
+    <section class="hero-section fade-in">
+        <h1><i class="fas fa-eye"></i> MS Memorial Netralaya</h1>
+        <p class="lead">Premier Eye Care Hospital in Dildarnagar, Ghazipur</p>
+        <p>Comprehensive Eye Care Services | Expert Ophthalmologists | State-of-the-Art Technology</p>
+        <div class="mt-4">
+            {% if user.is_authenticated and user.is_patient %}
+                <a href="{% url 'appointments:book_appointment' %}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-calendar-plus"></i> Book Appointment
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-user-plus"></i> Register Now
+                </a>
+            {% endif %}
+            <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-user-md"></i> Our Doctors
+            </a>
+        </div>
+    </section>
+
+    <!-- Chief Doctor Section -->
+    <section class="my-5">
+        <h2 class="text-center mb-4" style="color: var(--primary-color);">
+            <i class="fas fa-star"></i> Meet Our Chief Ophthalmologist
+        </h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="doctor-card chief-doctor-card">
+                    <div class="chief-badge">
+                        <i class="fas fa-crown"></i> Chief Ophthalmologist
+                    </div>
+                    <img src="https://via.placeholder.com/150?text=Dr.+Madhav" alt="Dr. Madhav Mukund" class="doctor-image">
+                    <h3 class="doctor-name">Dr. Madhav Mukund</h3>
+                    <p class="doctor-specialization">MBBS, MS (Ophthalmology)</p>
+                    <p class="text-muted mb-3">
+                        <i class="fas fa-graduation-cap"></i> KGMC Lucknow | GSVM Kanpur
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-briefcase"></i> <strong>15+ Years Experience</strong>
+                    </p>
+                    <p class="text-start px-4">
+                        Dr. Madhav Mukund is a renowned ophthalmologist with extensive experience in comprehensive eye care. 
+                        He earned his MBBS at King George Medical College (KGMC) in Lucknow and his MS at Ganesh Shankar 
+                        Vidyarthi Memorial Medical (GSVM) College in Kanpur. With a wealth of knowledge and a well-earned 
+                        reputation for delivering top-notch care, Dr. Mukund leads our team in improving the lives of patients 
+                        across rural communities.
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge bg-primary me-2"><i class="fas fa-check"></i> Cataract Surgery</span>
+                        <span class="badge bg-primary me-2"><i class="fas fa-check"></i> Glaucoma Treatment</span>
+                        <span class="badge bg-primary me-2"><i class="fas fa-check"></i> Retina Care</span>
+                        <span class="badge bg-primary"><i class="fas fa-check"></i> General Eye Care</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="my-5">
+        <h2 class="text-center mb-4" style="color: var(--primary-color);">
+            <i class="fas fa-stethoscope"></i> Our Services
+        </h2>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="service-box">
+                    <div class="service-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h4 class="service-title">Cataract & Refractive Care</h4>
+                    <p>Clear vision, better life. Comprehensive cataract & refractive care with state-of-the-art technology.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="service-box">
+                    <div class="service-icon">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h4 class="service-title">Vitreo Retina Services</h4>
+                    <p>Advanced vitreo-retina care. Expert specialists to preserve your vision with cutting-edge treatments.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="service-box">
+                    <div class="service-icon">
+                        <i class="fas fa-eye-dropper"></i>
+                    </div>
+                    <h4 class="service-title">Glaucoma Services</h4>
+                    <p>Comprehensive glaucoma care. Experienced specialists to protect your vision with advanced treatments.</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="service-box">
+                    <div class="service-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4 class="service-title">Oculoplasty Services</h4>
+                    <p>Enhance your eyes and face. Skilled oculoplasty specialists providing aesthetic & functional solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4">
+                <h2 style="color: var(--primary-color);">
+                    <i class="fas fa-hospital"></i> About MS Memorial Netralaya
+                </h2>
+                <p class="lead">Trusted Eye Care Since 2008</p>
+                <p>
+                    Welcome to MS Memorial Netralaya, a trusted destination for comprehensive eyecare services. 
+                    Established in 2008, our centre is located in the thriving small town of Dildarnagar in eastern 
+                    Uttar Pradesh. Our core mission is to serve the rural population that has little access to 
+                    specialised eyecare.
+                </p>
+                <p>
+                    At MS Memorial Netralaya, we pride ourselves on our unwavering commitment to addressing the unique 
+                    challenges faced by rural communities when it comes to accessing top-notch specialised eyecare. 
+                    That's why we bring state-of-the-art technology, sophisticated tools, and contemporary facilities 
+                    right to your doorstep to deliver you the best eyecare services.
+                </p>
+                <a href="{% url 'core:about' %}" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </a>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=600" 
+                         class="card-img-top" alt="Hospital" style="height: 400px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Doctors Section -->
+    {% if doctors %}
+    <section class="my-5">
+        <h2 class="text-center mb-4" style="color: var(--primary-color);">
+            <i class="fas fa-user-md"></i> Our Expert Doctors
+        </h2>
+        <div class="row">
+            {% for doctor in doctors %}
+            <div class="col-md-4 mb-4">
+                <div class="doctor-card">
+                    {% if doctor.user.profile_picture %}
+                        <img src="{{ doctor.user.profile_picture.url }}" alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150?text=Dr.+{{ doctor.user.first_name }}" alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                    {% endif %}
+                    <h4 class="doctor-name">Dr. {{ doctor.user.get_full_name }}</h4>
+                    <p class="doctor-specialization">{{ doctor.get_specialization_display }}</p>
+                    <p class="text-muted">
+                        <i class="fas fa-briefcase"></i> {{ doctor.experience_years }} Years Experience
+                    </p>
+                    <p class="text-muted">
+                        <i class="fas fa-rupee-sign"></i> Consultation Fee: ₹{{ doctor.consultation_fee }}
+                    </p>
+                    <a href="{% url 'doctors:doctor_detail' doctor.id %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-info-circle"></i> View Profile
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'doctors:doctor_list' %}" class="btn btn-outline-primary">
+                <i class="fas fa-users"></i> View All Doctors
+            </a>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Testimonials Section -->
+    {% if testimonials %}
+    <section class="my-5">
+        <h2 class="text-center mb-4" style="color: var(--primary-color);">
+            <i class="fas fa-comments"></i> What Our Patients Say
+        </h2>
+        <div class="row">
+            {% for testimonial in testimonials %}
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="rating mb-2">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= testimonial.rating %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p class="testimonial-text">"{{ testimonial.message }}"</p>
+                    <p class="testimonial-author">- {{ testimonial.patient_name }}</p>
+                    {% if testimonial.designation %}
+                        <p class="text-muted small">{{ testimonial.designation }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Call to Action -->
+    <section class="my-5 text-center">
+        <div class="card" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white;">
+            <div class="card-body py-5">
+                <h2><i class="fas fa-phone-alt"></i> Call Us Today for Consultation</h2>
+                <h3 class="mt-3">+91-8004800688 | +91-8004800699</h3>
+                <p class="lead mt-3">Expert Eye Care | Modern Facilities | Affordable Treatment</p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'accounts:register' %}" class="btn btn-light btn-lg mt-3">
+                        <i class="fas fa-user-plus"></i> Register Now
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

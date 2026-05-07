@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MS Memorial Netralaya - Premier Eye Care Hospital in Dildarnagar, Ghazipur">
+    <meta name="keywords" content="eye hospital, ophthalmology, cataract surgery, eye care, Dildarnagar, Ghazipur">
+    <title>{% block title %}MS Memorial Netralaya - Eye Care Hospital{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Fixed Eye Background -->
+    <div class="eye-background"></div>
+    <div class="eye-overlay"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                <img src="https://img.icons8.com/fluency/96/000000/visible.png" alt="Eye Logo" class="hospital-logo">
+                <span>MS Memorial Netralaya</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:home' %}">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:about' %}">
+                            <i class="fas fa-info-circle"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'doctors:doctor_list' %}">
+                            <i class="fas fa-user-md"></i> Doctors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'doctors:gallery' %}">
+                            <i class="fas fa-images"></i> Gallery
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'appointments:contact' %}">
+                            <i class="fas fa-envelope"></i> Contact
+                        </a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> {{ user.get_full_name }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% if user.is_admin %}
+                                    <li><a class="dropdown-item" href="{% url 'core:admin_dashboard' %}">
+                                        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="/admin/">
+                                        <i class="fas fa-cog"></i> Admin Panel
+                                    </a></li>
+                                {% elif user.is_doctor %}
+                                    <li><a class="dropdown-item" href="{% url 'doctors:doctor_dashboard' %}">
+                                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'doctors:appointment_list' %}">
+                                        <i class="fas fa-calendar-check"></i> Appointments
+                                    </a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'accounts:patient_dashboard' %}">
+                                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{% url 'appointments:book_appointment' %}">
+                                        <i class="fas fa-calendar-plus"></i> Book Appointment
+                                    </a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                                    <i class="fas fa-user-edit"></i> Profile
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:notifications' %}">
+                                    <i class="fas fa-bell"></i> Notifications
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:login' %}">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:register' %}">
+                                <i class="fas fa-user-plus"></i> Register
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-hospital"></i> MS Memorial Netralaya</h5>
+                    <p>Providing world-class eye care services since 2008. Your vision is our mission.</p>
+                    <div class="mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook fa-2x"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter fa-2x"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram fa-2x"></i></a>
+                        <a href="#"><i class="fab fa-youtube fa-2x"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-link"></i> Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:home' %}">Home</a></li>
+                        <li><a href="{% url 'core:about' %}">About Us</a></li>
+                        <li><a href="{% url 'doctors:doctor_list' %}">Our Doctors</a></li>
+                        <li><a href="{% url 'doctors:gallery' %}">Gallery</a></li>
+                        <li><a href="{% url 'appointments:contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5><i class="fas fa-address-book"></i> Contact Info</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> Dildarnagar, Ghazipur, Uttar Pradesh</p>
+                    <p><i class="fas fa-phone"></i> +91-8004800688, +91-8004800699</p>
+                    <p><i class="fas fa-envelope"></i> info@msmemorialnetralaya.com</p>
+                    <p><i class="fas fa-clock"></i> Mon-Sat: 9:00 AM - 5:00 PM</p>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p>&copy; 2026 MS Memorial Netralaya. All Rights Reserved. | Designed with <i class="fas fa-heart text-danger"></i> for Better Vision</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

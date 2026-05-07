@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Doctors - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">
+        <i class="fas fa-user-md"></i> Our Expert Doctors
+    </h2>
+    <p class="text-center lead mb-5">Meet our team of experienced ophthalmologists</p>
+    
+    <!-- Filter by Specialization -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="row g-3">
+                        <div class="col-md-10">
+                            <select name="specialization" class="form-control">
+                                <option value="">All Specializations</option>
+                                {% for code, name in specializations %}
+                                    <option value="{{ code }}" {% if specialization_filter == code %}selected{% endif %}>
+                                        {{ name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Doctors Grid -->
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-md-4 mb-4">
+            <div class="doctor-card {% if doctor.user.email == 'madhav@hospital.com' %}chief-doctor-card{% endif %}">
+                {% if doctor.user.email == 'madhav@hospital.com' %}
+                    <div class="chief-badge">
+                        <i class="fas fa-crown"></i> Chief Ophthalmologist
+                    </div>
+                {% endif %}
+                
+                {% if doctor.user.profile_picture %}
+                    <img src="{{ doctor.user.profile_picture.url }}" alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                {% else %}
+                    <img src="https://via.placeholder.com/150?text=Dr.+{{ doctor.user.first_name }}" 
+                         alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                {% endif %}
+                
+                <h4 class="doctor-name">Dr. {{ doctor.user.get_full_name }}</h4>
+                <p class="doctor-specialization">{{ doctor.get_specialization_display }}</p>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-graduation-cap"></i> {{ doctor.qualification }}
+                </p>
+                <p class="text-muted mb-2">
+                    <i class="fas fa-briefcase"></i> {{ doctor.experience_years }} Years Experience
+                </p>
+                <p class="text-muted mb-3">
+                    <i class="fas fa-rupee-sign"></i> Consultation: ₹{{ doctor.consultation_fee }}
+                </p>
+                
+                <div class="d-grid gap-2">
+                    <a href="{% url 'doctors:doctor_detail' doctor.id %}" class="btn btn-primary">
+                        <i class="fas fa-info-circle"></i> View Profile
+                    </a>
+                    {% if user.is_authenticated and user.is_patient %}
+                        <a href="{% url 'appointments:book_appointment' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-calendar-plus"></i> Book Appointment
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-md-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle"></i> No doctors found.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact Us - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">
+        <i class="fas fa-envelope"></i> Contact Us
+    </h2>
+    <p class="text-center lead mb-5">Get in touch with us for any inquiries</p>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4><i class="fas fa-paper-plane"></i> Send Message</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary w-100 mt-3">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4><i class="fas fa-info-circle"></i> Contact Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5><i class="fas fa-map-marker-alt text-primary"></i> Address</h5>
+                        <p>MS Memorial Netralaya<br>
+                        Dildarnagar, Ghazipur<br>
+                        Uttar Pradesh, India</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5><i class="fas fa-phone text-primary"></i> Phone</h5>
+                        <p>+91-8004800688<br>
+                        +91-8004800699</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5><i class="fas fa-envelope text-primary"></i> Email</h5>
+                        <p>info@msmemorialnetralaya.com</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5><i class="fas fa-clock text-primary"></i> Working Hours</h5>
+                        <p>Monday - Saturday: 9:00 AM - 5:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5><i class="fas fa-share-alt text-primary"></i> Follow Us</h5>
+                        <a href="#" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                        <a href="#" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <a href="#" class="btn btn-outline-primary mb-2">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

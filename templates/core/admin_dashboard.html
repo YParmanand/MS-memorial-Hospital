@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4">
+        <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+    </h2>
+    <p class="lead">Welcome, {{ user.get_full_name }}!</p>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="stat-card primary">
+                <div class="stat-number">{{ total_patients }}</div>
+                <div class="stat-label">Total Patients</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card success">
+                <div class="stat-number">{{ total_doctors }}</div>
+                <div class="stat-label">Total Doctors</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card warning">
+                <div class="stat-number">{{ total_appointments }}</div>
+                <div class="stat-label">Total Appointments</div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card danger">
+                <div class="stat-number">{{ pending_appointments }}</div>
+                <div class="stat-label">Pending Appointments</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+                <div class="mt-3">
+                    <a href="/admin/" class="btn btn-primary me-2 mb-2">
+                        <i class="fas fa-cog"></i> Admin Panel
+                    </a>
+                    <a href="/admin/doctors/doctor/add/" class="btn btn-success me-2 mb-2">
+                        <i class="fas fa-user-plus"></i> Add Doctor
+                    </a>
+                    <a href="/admin/appointments/appointment/" class="btn btn-warning me-2 mb-2">
+                        <i class="fas fa-calendar"></i> Manage Appointments
+                    </a>
+                    <a href="/admin/appointments/contact/" class="btn btn-info mb-2">
+                        <i class="fas fa-envelope"></i> View Messages
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Appointment Statistics -->
+        <div class="col-md-6 mb-4">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-chart-pie"></i> Appointment Statistics</h4>
+                <div class="mt-3">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Pending</span>
+                            <span class="badge bg-warning">{{ pending_appointments }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: {% widthratio pending_appointments total_appointments 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Approved</span>
+                            <span class="badge bg-success">{{ approved_appointments }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width: {% widthratio approved_appointments total_appointments 100 %}%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Rejected</span>
+                            <span class="badge bg-danger">{{ rejected_appointments }}</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width: {% widthratio rejected_appointments total_appointments 100 %}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Contacts -->
+        <div class="col-md-6 mb-4">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-envelope"></i> Recent Contact Messages</h4>
+                {% if recent_contacts %}
+                    <div class="mt-3">
+                        {% for contact in recent_contacts %}
+                        <div class="card mb-2 border-primary">
+                            <div class="card-body p-3">
+                                <h6 class="mb-1">
+                                    <span class="badge bg-primary">New</span>
+                                    {{ contact.subject }}
+                                </h6>
+                                <p class="mb-1 small">From: {{ contact.name }} ({{ contact.email }})</p>
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> {{ contact.created_at|timesince }} ago
+                                </small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="/admin/appointments/contact/" class="btn btn-sm btn-outline-primary mt-2">
+                        View All Messages
+                    </a>
+                {% else %}
+                    <p class="text-muted mt-3">No unread messages.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Appointments -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <h4><i class="fas fa-calendar-check"></i> Recent Appointments</h4>
+                {% if recent_appointments %}
+                    <div class="table-responsive mt-3">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in recent_appointments %}
+                                <tr>
+                                    <td>{{ appointment.patient.get_full_name }}</td>
+                                    <td>Dr. {{ appointment.doctor.user.get_full_name }}</td>
+                                    <td>{{ appointment.appointment_date }}</td>
+                                    <td>{{ appointment.appointment_time }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ appointment.status|lower }}">
+                                            {{ appointment.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/appointments/appointment/{{ appointment.id }}/change/" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mt-3">No appointments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

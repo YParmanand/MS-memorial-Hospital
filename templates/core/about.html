@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4" style="color: var(--primary-color);">
+        <i class="fas fa-hospital"></i> About MS Memorial Netralaya
+    </h2>
+    
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=600" 
+                     class="card-img-top" alt="Hospital" style="height: 300px; object-fit: cover;">
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <h3 style="color: var(--primary-color);">Our Story</h3>
+            <p>Welcome to MS Memorial Netralaya, a trusted destination for comprehensive eyecare services. 
+            Established in 2008, our centre is located in the thriving small town of Dildarnagar in eastern 
+            Uttar Pradesh.</p>
+            
+            <p>Our core mission is to serve the rural population that has little access to specialised eyecare. 
+            Led by Dr. Madhav Mukund, an ophthalmologist par excellence, our team is committed to improving 
+            vision and overall eye health for our patients.</p>
+            
+            <p>Dr. Madhav Mukund earned his MBBS at the King George Medical College (KGMC) in Lucknow and his 
+            MS at the Ganesh Shankar Vidyarthi Memorial Medical (GSVM) College in Kanpur. With a wealth of 
+            knowledge, experience, and a well-earned reputation for delivering top-notch care and producing 
+            remarkable results, Dr. Madhav Mukund resolutely leads our team to improve the lives of our patients.</p>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 class="text-center mb-4" style="color: var(--primary-color);">Our Mission & Vision</h3>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-bullseye fa-3x text-primary mb-3"></i>
+                    <h4>Our Mission</h4>
+                    <p>To provide world-class eye care services to rural communities, ensuring that everyone, 
+                    regardless of their location, has access to the best eyecare available. We bring state-of-the-art 
+                    technology and contemporary facilities right to your doorstep.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-eye fa-3x text-primary mb-3"></i>
+                    <h4>Our Vision</h4>
+                    <p>To be the leading eye care provider in rural India, recognized for excellence in patient care, 
+                    advanced technology, and compassionate service. We envision a future where no one suffers from 
+                    preventable blindness due to lack of access to quality eye care.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <h3 class="text-center mb-4" style="color: var(--primary-color);">Why Choose Us</h3>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h5>Expert Doctors</h5>
+                <p>Highly qualified and experienced ophthalmologists</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h5>Modern Facilities</h5>
+                <p>State-of-the-art equipment and technology</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h5>Compassionate Care</h5>
+                <p>Patient-centered approach with personalized attention</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-4">
+            <div class="service-box">
+                <div class="service-icon">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <h5>Affordable</h5>
+                <p>Quality eye care at reasonable prices</p>
+            </div>
+        </div>
+    </div>
+    
+    {% if doctors %}
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center mb-4" style="color: var(--primary-color);">Our Medical Team</h3>
+        </div>
+        {% for doctor in doctors %}
+        <div class="col-md-4 mb-4">
+            <div class="doctor-card">
+                {% if doctor.user.profile_picture %}
+                    <img src="{{ doctor.user.profile_picture.url }}" alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                {% else %}
+                    <img src="https://via.placeholder.com/150?text=Dr.+{{ doctor.user.first_name }}" 
+                         alt="{{ doctor.user.get_full_name }}" class="doctor-image">
+                {% endif %}
+                <h4 class="doctor-name">Dr. {{ doctor.user.get_full_name }}</h4>
+                <p class="doctor-specialization">{{ doctor.get_specialization_display }}</p>
+                <p class="text-muted">{{ doctor.experience_years }} Years Experience</p>
+                <a href="{% url 'doctors:doctor_detail' doctor.id %}" class="btn btn-primary btn-sm">
+                    View Profile
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

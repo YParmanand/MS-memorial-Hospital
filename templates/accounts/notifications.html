@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Notifications - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-bell"></i> Notifications</h2>
+        <a href="?mark_all_read=1" class="btn btn-outline-primary">
+            <i class="fas fa-check-double"></i> Mark All as Read
+        </a>
+    </div>
+    
+    {% if notifications %}
+        <div class="row">
+            {% for notification in notifications %}
+            <div class="col-md-12 mb-3">
+                <div class="card {% if not notification.is_read %}border-primary{% endif %}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title">
+                                    {% if not notification.is_read %}
+                                        <span class="badge bg-primary me-2">New</span>
+                                    {% endif %}
+                                    <i class="fas fa-envelope"></i> {{ notification.title }}
+                                </h5>
+                                <p class="card-text">{{ notification.message }}</p>
+                                
+                                {% if notification.appointment %}
+                                    <div class="alert alert-info mt-2">
+                                        <strong>Appointment Details:</strong><br>
+                                        Doctor: Dr. {{ notification.appointment.doctor.user.get_full_name }}<br>
+                                        Date: {{ notification.appointment.appointment_date }}<br>
+                                        Time: {{ notification.appointment.appointment_time }}<br>
+                                        Status: <span class="badge badge-{{ notification.appointment.status|lower }}">
+                                            {{ notification.appointment.get_status_display }}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                                
+                                <small class="text-muted">
+                                    <i class="fas fa-clock"></i> {{ notification.created_at|timesince }} ago
+                                    {% if notification.is_sms_sent %}
+                                        | <i class="fas fa-sms"></i> SMS Sent
+                                    {% endif %}
+                                </small>
+                            </div>
+                            
+                            {% if not notification.is_read %}
+                                <a href="{% url 'accounts:mark_notification_read' notification.id %}" 
+                                   class="btn btn-sm btn-outline-primary ms-3">
+                                    <i class="fas fa-check"></i> Mark Read
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            <i class="fas fa-inbox"></i> No notifications yet.
+        </div>
+    {% endif %}
+    
+    <div class="text-center mt-4">
+        <a href="{% if user.is_patient %}{% url 'accounts:patient_dashboard' %}{% elif user.is_doctor %}{% url 'doctors:doctor_dashboard' %}{% else %}{% url 'core:admin_dashboard' %}{% endif %}" 
+           class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Appointment - MS Memorial Netralaya{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h3><i class="fas fa-clipboard-check"></i> Review Appointment</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Appointment Details -->
+                    <div class="dashboard-card mb-4">
+                        <h5><i class="fas fa-info-circle"></i> Appointment Details</h5>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Patient:</strong> {{ appointment.patient.get_full_name }}</p>
+                                <p><strong>Email:</strong> {{ appointment.patient.email }}</p>
+                                <p><strong>Phone:</strong> {{ appointment.patient.phone }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Requested Date:</strong> {{ appointment.appointment_date }}</p>
+                                <p><strong>Requested Time:</strong> {{ appointment.appointment_time }}</p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge badge-{{ appointment.status|lower }}">
+                                        {{ appointment.get_status_display }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p><strong>Problem Description:</strong></p>
+                            <p class="border p-3 bg-light">{{ appointment.problem_description }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Form -->
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label"><strong>Action:</strong></label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="action" value="APPROVED" id="approve" required>
+                                <label class="form-check-label text-success" for="approve">
+                                    <i class="fas fa-check-circle"></i> Approve Appointment
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="action" value="DELAYED" id="delay">
+                                <label class="form-check-label text-warning" for="delay">
+                                    <i class="fas fa-clock"></i> Delay/Reschedule Appointment
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="action" value="REJECTED" id="reject">
+                                <label class="form-check-label text-danger" for="reject">
+                                    <i class="fas fa-times-circle"></i> Reject Appointment
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Approved/Rescheduled Date:</label>
+                                <input type="date" name="approved_date" class="form-control" 
+                                       value="{{ appointment.appointment_date|date:'Y-m-d' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Approved/Rescheduled Time:</label>
+                                <input type="time" name="approved_time" class="form-control" 
+                                       value="{{ appointment.appointment_time|time:'H:i' }}">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Rejection Reason (if rejecting):</label>
+                            <textarea name="rejection_reason" class="form-control" rows="2" 
+                                      placeholder="Reason for rejection..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Custom Message to Patient (optional):</label>
+                            <textarea name="custom_message" class="form-control" rows="3" 
+                                      placeholder="Additional message for the patient..."></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Submit Decision & Send Notification
+                            </button>
+                            <a href="{% url 'doctors:doctor_dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
