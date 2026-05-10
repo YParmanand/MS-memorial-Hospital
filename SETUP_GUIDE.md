@@ -78,7 +78,7 @@ python setup.py
 ```
 
 This will create:
-- Admin user (admin@hospital.com / admin123)
+- Admin user (admin@h*******.com / admin1**)
 - Dr. Madhav Mukund (madhav@hospital.com / doctor123)
 - Additional doctors
 - Sample patient (patient@hospital.com / patient123)
@@ -114,7 +114,7 @@ The server will start at: http://localhost:8000/
 
 ### Admin Panel
 - **URL**: http://localhost:8000/admin/
-- **Credentials**: admin@hospital.com / admin123
+- **Credentials**: admin@h*******.com / admin1**
 
 ### Dashboards
 - **Admin Dashboard**: http://localhost:8000/admin-dashboard/
@@ -124,8 +124,8 @@ The server will start at: http://localhost:8000/
 ## Default User Accounts
 
 ### Admin
-- **Email**: admin@hospital.com
-- **Password**: admin123
+- **Email**: admin@h*******.com
+- **Password**: admin1**
 - **Access**: Full system control, analytics, user management
 
 ### Chief Doctor (Dr. Madhav Mukund)

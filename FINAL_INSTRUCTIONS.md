@@ -102,8 +102,8 @@ That's it! Your website will be running at: **http://localhost:8000/**
 
 ### Admin Account
 - **URL**: http://localhost:8000/admin/
-- **Email**: admin@hospital.com
-- **Password**: admin123
+- **Email**: admin@h*******.com
+- **Password**: admin1***
 - **Access**: Full system control
 
 ### Chief Doctor (Dr. Madhav Mukund)
